@@ -1,0 +1,1086 @@
+<!DOCTYPE html>
+<html lang="en" class="scroll-smooth">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Our Little Corner — A Surprise For You</title>
+
+  <!-- Tailwind CSS CDN -->
+  <script src="https://cdn.tailwindcss.com"></script>
+
+  <!-- Google Fonts: Playfair Display (Romantic Serif), Plus Jakarta Sans (Clean Modern UI), Caveat (Handwritten Polaroid Notes) -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Caveat:wght@500;600;700&family=Playfair+Display:ital,wght@0,500;0,600;0,700;1,500&family=Plus+Jakarta+Sans:wght@400;500;600;700&display=swap" rel="stylesheet">
+
+  <script>
+    tailwind.config = {
+      darkMode: 'class',
+      theme: {
+        extend: {
+          fontFamily: {
+            serif: ['"Playfair Display"', 'serif'],
+            sans: ['"Plus Jakarta Sans"', 'sans-serif'],
+            hand: ['"Caveat"', 'cursive'],
+          },
+          colors: {
+            blush: {
+              50: '#fff5f7',
+              100: '#ffe4e9',
+              200: '#fecdd6',
+              300: '#fda4b6',
+              400: '#fb718e',
+              500: '#f43f66',
+              600: '#e11d4c',
+            },
+            cream: '#fdf8f5',
+            wine: '#190d13',
+          },
+          animation: {
+            'float': 'float 6s ease-in-out infinite',
+            'spin-slow': 'spin 9s linear infinite',
+            'pulse-soft': 'pulse 3s cubic-bezier(0.4, 0, 0.6, 1) infinite',
+          },
+          keyframes: {
+            float: {
+              '0%, 100%': { transform: 'translateY(0px)' },
+              '50%': { transform: 'translateY(-10px)' },
+            }
+          }
+        }
+      }
+    }
+  </script>
+
+  <style>
+    /* =====================================================================
+       CUSTOM STYLES: GLASSMORPHISM, POLAROIDS & ENVELOPE ANIMATIONS
+       ===================================================================== */
+    .glass-card {
+      background: rgba(255, 255, 255, 0.78);
+      backdrop-filter: blur(16px);
+      -webkit-backdrop-filter: blur(16px);
+      border: 1px solid rgba(255, 255, 255, 0.9);
+    }
+    .dark .glass-card {
+      background: rgba(36, 19, 27, 0.78);
+      border: 1px solid rgba(255, 182, 193, 0.16);
+    }
+
+    /* Polaroid Frame Tactile Lift */
+    .polaroid-card {
+      transition: transform 0.35s cubic-bezier(0.22, 1, 0.36, 1), box-shadow 0.35s ease;
+    }
+    .polaroid-card:hover {
+      transform: scale(1.04) rotate(0deg) !important;
+      z-index: 20;
+    }
+
+    /* Confetti & Floating Hearts Layer */
+    #celebration-canvas {
+      position: fixed;
+      inset: 0;
+      pointer-events: none;
+      z-index: 9999;
+    }
+
+    /* Ambient Background Hearts */
+    .bg-heart {
+      position: fixed;
+      bottom: -40px;
+      pointer-events: none;
+      z-index: 1;
+      opacity: 0.25;
+      animation: riseUp linear infinite;
+    }
+    @keyframes riseUp {
+      0% { transform: translateY(0) rotate(0deg) scale(0.8); opacity: 0; }
+      15% { opacity: 0.28; }
+      85% { opacity: 0.22; }
+      100% { transform: translateY(-110vh) rotate(25deg) scale(1.1); opacity: 0; }
+    }
+
+    /* Reason Card Deck Animation */
+    .reason-pop {
+      animation: reasonPop 0.42s cubic-bezier(0.22, 1, 0.36, 1) forwards;
+    }
+    @keyframes reasonPop {
+      0% { opacity: 0; transform: translateY(16px) scale(0.95) rotate(-1.5deg); }
+      100% { opacity: 1; transform: translateY(0) scale(1) rotate(0deg); }
+    }
+
+    /* Envelope Flap Transition */
+    .envelope-flap {
+      transform-origin: top center;
+      transition: transform 0.65s cubic-bezier(0.4, 0, 0.2, 1);
+    }
+    .envelope-open .envelope-flap {
+      transform: rotateX(180deg);
+    }
+  </style>
+</head>
+<body class="bg-cream text-stone-800 dark:bg-wine dark:text-rose-100 font-sans antialiased transition-colors duration-500 overflow-x-hidden selection:bg-blush-200 selection:text-blush-600">
+
+  <!-- =====================================================================
+       EASY CONFIGURATION OBJECT (Edit your names, date, video, reasons & letter!)
+       ===================================================================== -->
+  <script>
+    const COUPLE_DATA = {
+      yourName: "BABA",
+      partnerName: "DEHA",
+      // Format: "YYYY-MM-DDTHH:MM:SS"
+      anniversaryDate: "2023-11-17T05:58:00",
+      subtitle: "Every love story is beautiful, but ours is my absolute favorite.",
+
+      // Looping background video file path (place background.mp4 in the same folder, or pick one in Customize)
+      backgroundVideo: "background.mp4",
+
+      // Interactive "Reasons I Love You" Deck
+      reasons: [
+        "The way your eyes light up whenever you talk about something you love.",
+        "How calm, safe, and completely at home I feel whenever I am with you.",
+        "Your contagious laugh that turns even my hardest days around in seconds.",
+        "The tiny details you remember about me without me ever having to ask.",
+        "How effortlessly you turn simple errands and late-night walks into core memories.",
+        "Your kindness, warmth, and the gentle way you care for the people around you.",
+        "Because choosing you is the easiest, happiest decision I make every single day."
+      ],
+
+      // Secret Love Letter Content
+      letterGreeting: "My dearest MRs KHONSA GUDUNG HAZARIKA,",
+      letterBody: [
+        "My love khonsa 🤍",
+        "I don't know how to be content I want more of you... You know the type were their is only love ...",
+        " This words are my true feeling for u right now ..I can't guarantee you that I will always make ",
+        "u smile or happy or a bit of sadness or other feelings. I do know that my love 💓 for u will remain same",
+        " as long as u r with me.. supporting me, keep holding me when I am down, raising me when I behave like a child 😅.",
+        "I don't know how to take the steps for a long relationship. I have thought of it that i will do that n do that but",
+        " who can say we will get things done as we want form others. There are many uncertainties.",
+        "(Oky .. this was some sad parts 😅😅 ). Just keep staying together with the trust we build for each other.",
+        " And whenever u have thought of me leaving or other negative thoughts plz plz say it I will listen to it from start",
+         "to end doesn't matter how much time passes let it be life time or a moments or whatever. (It applies both ways)",
+        "I know I'm saying some stupid things 🥲 but I really want you to be my life partner, my wife, my children mother 😅😅",
+        " my maa's and deta r daughter in law and my baa r sister in law 😅😅",
+        "I think it is more of a conffession that i want to you to  spend rest of your life with me.",
+        " I'm faithful so don't worry I will never leave u until my death 💀....",
+        "Your lover,",
+        "If you want to be my partner then", 
+        "Your husband",
+        "Your children's father", 
+        "our anu's son in law ",
+        "I hope this word expresses my deep ocean like love feelings to you",
+                      "Your petal or 🐼 panda😅 or baba or bubu or kuchuphu ❤️",
+      ],
+      letterSignOff: "Forever & always yours, ABHINAV ❤️",
+    };
+  </script>
+
+  <!-- =====================================================================
+       REPEATABLE (LOOPING) BACKGROUND VIDEO POSITIONED BELOW THE HEADER
+       ===================================================================== -->
+  <div id="bg-video-wrapper" class="fixed left-0 right-0 bottom-0 top-[60px] z-0 pointer-events-none overflow-hidden" aria-hidden="true">
+    <video
+      id="bg-video"
+      class="w-full h-full object-cover opacity-0 transition-opacity duration-1000"
+      autoplay
+      loop
+      playsinline
+    ></video>
+    <!-- Light readability tint so the video stays clear and vibrant -->
+    <div id="bg-video-overlay" class="absolute inset-0 bg-cream/15 dark:bg-wine/25 transition-colors duration-500"></div>
+  </div>
+
+  <!-- Confetti & Heart Burst Canvas -->
+  <canvas id="celebration-canvas"></canvas>
+
+  <!-- Subtle Floating Background Hearts Container -->
+  <div id="ambient-hearts-container" aria-hidden="true"></div>
+
+  <!-- =====================================================================
+       1. PLAYFUL INTERACTIVE ENTRY GATE ("Ready to unlock our little world?")
+       ===================================================================== -->
+  <section id="entry-gate" class="fixed inset-0 z-50 flex items-center justify-center p-4 bg-gradient-to-br from-blush-50/55 via-cream/55 to-blush-100/55 dark:from-[#1f0e16]/60 dark:via-wine/60 dark:to-[#2c121e]/60 backdrop-blur-[2px] transition-opacity duration-700">
+    <!-- Soft Decorative Glows -->
+    <div class="absolute top-12 left-8 w-56 h-56 bg-blush-300/30 rounded-full blur-3xl animate-float pointer-events-none"></div>
+    <div class="absolute bottom-12 right-8 w-64 h-64 bg-amber-200/30 dark:bg-blush-500/15 rounded-full blur-3xl animate-float pointer-events-none" style="animation-delay: 2s;"></div>
+
+    <div class="relative max-w-md w-full glass-card rounded-3xl p-8 sm:p-10 text-center shadow-2xl shadow-blush-500/15 border border-blush-200/70 dark:border-white/10">
+      <!-- Pulsing Heart Badge -->
+      <div class="mx-auto mb-6 w-20 h-20 rounded-full bg-gradient-to-tr from-blush-600 to-blush-400 flex items-center justify-center shadow-lg shadow-blush-500/35 animate-float">
+        <svg class="w-10 h-10 text-white" fill="currentColor" viewBox="0 0 24 24">
+          <path d="M12 21.35l-1.45-1.32C5.4 15.36 2 12.28 2 8.5 2 5.42 4.42 3 7.5 3c1.74 0 3.41.81 4.5 2.09C13.09 3.81 14.76 3 16.5 3 19.58 3 22 5.42 22 8.5c0 3.78-3.4 6.86-8.55 11.54L12 21.35z"/>
+        </svg>
+      </div>
+
+      <span class="inline-block px-3.5 py-1 mb-3 text-xs font-bold tracking-widest uppercase rounded-full bg-blush-100 text-blush-600 dark:bg-blush-500/20 dark:text-blush-300">
+        Private Access Only
+      </span>
+
+      <h1 class="font-serif text-3xl sm:text-4xl font-bold text-stone-900 dark:text-white mb-3">
+        Hey <span id="gate-partner-name">DEHA</span> ✨
+      </h1>
+      <p id="gate-prompt-text" class="text-stone-600 dark:text-rose-200/85 text-base sm:text-lg mb-8 leading-relaxed">
+        Do you love me &amp; want to unlock our little corner of the internet?
+      </p>
+
+      <!-- Action Buttons: Growing 'Yes' & Dodging 'No' -->
+      <div class="flex flex-wrap items-center justify-center gap-4 min-h-[72px] relative">
+        <button id="gate-yes-btn" class="px-8 py-3.5 rounded-full bg-gradient-to-r from-blush-600 to-blush-500 hover:from-blush-500 hover:to-blush-400 text-white font-semibold text-base shadow-lg shadow-blush-500/35 transform transition-all duration-200 hover:scale-105 active:scale-95 cursor-pointer z-10">
+          Yes! ❤️
+        </button>
+
+        <button id="gate-no-btn" class="px-6 py-3 rounded-full bg-stone-200/90 dark:bg-white/10 text-stone-600 dark:text-rose-200 font-medium text-sm transition-all duration-200 cursor-pointer select-none">
+          No 🙈
+        </button>
+      </div>
+    </div>
+  </section>
+
+  <!-- =====================================================================
+       MAIN SINGLE-PAGE EXPERIENCE
+       ===================================================================== -->
+  <main id="main-app" class="relative z-10 hidden opacity-0 transition-opacity duration-1000 pb-28">
+
+    <!-- Top Sticky Glass Navigation -->
+    <header id="main-header" class="sticky top-0 z-40 backdrop-blur-md bg-cream/90 dark:bg-wine/90 border-b border-blush-200/60 dark:border-white/10">
+      <div class="max-w-5xl mx-auto px-4 py-3 flex items-center justify-between gap-2">
+        <a href="#hero" class="font-serif font-bold text-lg sm:text-xl tracking-tight text-blush-600 dark:text-blush-400 flex items-center gap-2">
+          <span>♥</span>
+          <span>Our Little Corner</span>
+        </a>
+
+        <nav class="hidden md:flex items-center gap-6 text-sm font-medium text-stone-600 dark:text-rose-200/80">
+          <a href="#memories" class="hover:text-blush-600 dark:hover:text-blush-300 transition">Memories</a>
+          <a href="#reasons" class="hover:text-blush-600 dark:hover:text-blush-300 transition">Reasons</a>
+          <a href="#letter" class="hover:text-blush-600 dark:hover:text-blush-300 transition">Love Letter</a>
+        </nav>
+
+        <div class="flex items-center gap-2">
+          <!-- Discrete Customize Gear Button -->
+          <button id="customize-toggle-btn" class="p-2.5 rounded-full glass-card hover:bg-blush-100/80 dark:hover:bg-white/10 transition cursor-pointer flex items-center gap-1.5 text-xs font-semibold" title="Customize Names, Date, Video & Photos">
+            <span>⚙️</span>
+            <span class="hidden sm:inline">Customize</span>
+          </button>
+
+          <!-- Light / Dark Mode Switch -->
+          <button id="theme-switch-btn" class="p-2.5 rounded-full glass-card hover:bg-blush-100/80 dark:hover:bg-white/10 transition cursor-pointer" aria-label="Toggle Theme" title="Switch Theme">
+            <span id="theme-switch-icon">🌙</span>
+          </button>
+        </div>
+      </div>
+
+      <!-- Collapsible Live Customizer Panel -->
+      <div id="customizer-panel" class="hidden border-t border-blush-200/60 dark:border-white/10 bg-white/95 dark:bg-[#24111a]/95 px-4 py-4 shadow-lg">
+        <div class="max-w-5xl mx-auto">
+          <div class="flex items-center justify-between mb-3">
+            <h3 class="text-xs font-bold uppercase tracking-wider text-blush-600 dark:text-blush-300">
+              Live Preview Customizer (Test your details right here!)
+            </h3>
+            <button id="close-customizer-btn" class="text-xs text-stone-400 hover:text-stone-700 dark:hover:text-white cursor-pointer">✕ Close</button>
+          </div>
+          <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-3 text-sm">
+            <div>
+              <label class="block text-xs font-medium text-stone-500 dark:text-rose-300/70 mb-1">Your Name</label>
+              <input id="cfg-your-name" type="text" class="w-full px-3 py-2 rounded-xl border border-blush-200 dark:border-white/15 bg-blush-50/40 dark:bg-black/30 focus:outline-none focus:ring-2 focus:ring-blush-400" />
+            </div>
+            <div>
+              <label class="block text-xs font-medium text-stone-500 dark:text-rose-300/70 mb-1">Partner's Name</label>
+              <input id="cfg-partner-name" type="text" class="w-full px-3 py-2 rounded-xl border border-blush-200 dark:border-white/15 bg-blush-50/40 dark:bg-black/30 focus:outline-none focus:ring-2 focus:ring-blush-400" />
+            </div>
+            <div>
+              <label class="block text-xs font-medium text-stone-500 dark:text-rose-300/70 mb-1">Anniversary Date &amp; Time</label>
+              <input id="cfg-anniversary" type="datetime-local" class="w-full px-3 py-2 rounded-xl border border-blush-200 dark:border-white/15 bg-blush-50/40 dark:bg-black/30 focus:outline-none focus:ring-2 focus:ring-blush-400" />
+            </div>
+            <div>
+              <label class="block text-xs font-medium text-stone-500 dark:text-rose-300/70 mb-1">Background Video</label>
+              <input type="file" id="bg-video-file-input" accept="video/*" class="hidden" />
+              <button id="cfg-video-btn" type="button" class="w-full px-3 py-2 rounded-xl bg-blush-600 hover:bg-blush-500 text-white font-semibold text-xs shadow transition cursor-pointer">
+                Choose Looping Video 🎬
+              </button>
+            </div>
+          </div>
+          <p class="mt-2.5 text-xs text-stone-500 dark:text-rose-200/70">
+            💡 Tip: Save your video as <code class="px-1.5 py-0.5 rounded bg-blush-100/80 dark:bg-white/10 font-mono">background.mp4</code> in the same folder as this HTML file so it loads automatically every time!
+          </p>
+        </div>
+      </div>
+    </header>
+
+    <!-- ===================================================================
+         2. HERO & LIVE RELATIONSHIP TIMER
+         =================================================================== -->
+    <section id="hero" class="max-w-5xl mx-auto px-4 pt-12 sm:pt-20 pb-16 text-center">
+      <div class="inline-flex items-center gap-2 px-4 py-1.5 rounded-full glass-card text-xs sm:text-sm font-semibold text-blush-600 dark:text-blush-300 mb-6 shadow-sm">
+        <span class="w-2 h-2 rounded-full bg-blush-500 animate-ping"></span>
+        <span>Us, Always</span>
+      </div>
+
+      <h1 class="font-serif text-4xl sm:text-6xl md:text-7xl font-bold tracking-tight text-stone-900 dark:text-white mb-4">
+        <span id="hero-your-name">ABHINAV</span>
+        <span class="text-blush-500 italic font-normal mx-1 sm:mx-2">&amp;</span>
+        <span id="hero-partner-name">DEHA</span>
+      </h1>
+
+      <p id="hero-subtitle" class="max-w-xl mx-auto text-stone-600 dark:text-rose-200/80 text-base sm:text-lg mb-10 leading-relaxed">
+        Every love story is beautiful, but ours is my absolute favorite.
+      </p>
+
+      <!-- Live Ticking Counter Card -->
+      <div class="max-w-3xl mx-auto glass-card rounded-3xl p-6 sm:p-8 shadow-xl shadow-blush-500/10">
+        <p class="text-xs font-bold uppercase tracking-widest text-blush-600 dark:text-blush-300 mb-5">
+          Loving You Every Single Second For
+        </p>
+
+        <div class="grid grid-cols-2 sm:grid-cols-5 gap-3 sm:gap-4">
+          <div class="rounded-2xl bg-blush-50/90 dark:bg-white/5 p-3.5 sm:p-4 border border-blush-200/50 dark:border-white/10">
+            <div id="timer-years" class="font-serif text-3xl sm:text-4xl font-bold text-blush-600 dark:text-blush-400">0</div>
+            <div class="text-xs font-semibold uppercase tracking-wider text-stone-500 dark:text-rose-200/70 mt-1">Years</div>
+          </div>
+          <div class="rounded-2xl bg-blush-50/90 dark:bg-white/5 p-3.5 sm:p-4 border border-blush-200/50 dark:border-white/10">
+            <div id="timer-days" class="font-serif text-3xl sm:text-4xl font-bold text-blush-600 dark:text-blush-400">0</div>
+            <div class="text-xs font-semibold uppercase tracking-wider text-stone-500 dark:text-rose-200/70 mt-1">Days</div>
+          </div>
+          <div class="rounded-2xl bg-blush-50/90 dark:bg-white/5 p-3.5 sm:p-4 border border-blush-200/50 dark:border-white/10">
+            <div id="timer-hours" class="font-serif text-3xl sm:text-4xl font-bold text-blush-600 dark:text-blush-400">00</div>
+            <div class="text-xs font-semibold uppercase tracking-wider text-stone-500 dark:text-rose-200/70 mt-1">Hours</div>
+          </div>
+          <div class="rounded-2xl bg-blush-50/90 dark:bg-white/5 p-3.5 sm:p-4 border border-blush-200/50 dark:border-white/10">
+            <div id="timer-minutes" class="font-serif text-3xl sm:text-4xl font-bold text-blush-600 dark:text-blush-400">00</div>
+            <div class="text-xs font-semibold uppercase tracking-wider text-stone-500 dark:text-rose-200/70 mt-1">Minutes</div>
+          </div>
+          <div class="col-span-2 sm:col-span-1 rounded-2xl bg-gradient-to-br from-blush-500 to-blush-600 text-white p-3.5 sm:p-4 shadow-md shadow-blush-500/25">
+            <div id="timer-seconds" class="font-serif text-3xl sm:text-4xl font-bold">00</div>
+            <div class="text-xs font-semibold uppercase tracking-wider text-blush-100 mt-1">Seconds</div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- ===================================================================
+         3. POLAROID MEMORY SCRAPBOOK (Click to replace photo or view lightbox)
+         =================================================================== -->
+    <section id="memories" class="max-w-5xl mx-auto px-4 py-14">
+      <div class="text-center mb-10">
+        <span class="text-xs font-bold uppercase tracking-widest text-blush-600 dark:text-blush-300">Captured Moments</span>
+        <h2 class="font-serif text-3xl sm:text-4xl font-bold text-stone-900 dark:text-white mt-1">Our Polaroid Wall</h2>
+        <p class="text-sm text-stone-500 dark:text-rose-200/75 mt-2">
+          Tap any Polaroid to view it up close or swap in your own favorite photo!
+        </p>
+      </div>
+
+      <!-- Hidden File Input for Swapping Polaroid Photos -->
+      <input type="file" id="polaroid-file-input" accept="image/*" class="hidden" />
+
+      <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6 sm:gap-7">
+        <!-- Polaroid 1 -->
+        <div class="polaroid-card group bg-white dark:bg-[#2a1620] p-3.5 pb-6 rounded-2xl shadow-xl shadow-stone-900/10 dark:shadow-black/40 border border-stone-100 dark:border-white/10 -rotate-2 cursor-pointer" data-polaroid-id="0">
+          <div class="relative aspect-[4/5] w-full rounded-xl overflow-hidden bg-gradient-to-br from-rose-200 via-blush-100 to-amber-100 flex items-center justify-center">
+            <img id="polaroid-img-0" src="photo1.jpg" alt="First Coffee Date" class="w-full h-full object-cover" />
+            <!-- Default Aesthetic SVG Illustration (Hidden when real photo is used) -->
+            <svg id="polaroid-svg-0" class="hidden w-full h-full" viewBox="0 0 300 375" fill="none" xmlns="http://www.w3.org/2000/svg">
+              <defs>
+                <linearGradient id="bg0" x1="0" y1="0" x2="300" y2="375" gradientUnits="userSpaceOnUse">
+                  <stop stop-color="#FFE4E9"/>
+                  <stop offset="1" stop-color="#FDE68A"/>
+                </linearGradient>
+              </defs>
+              <rect width="300" height="375" fill="url(#bg0)"/>
+              <circle cx="220" cy="85" r="38" fill="#FFFBEB" opacity="0.8"/>
+              <path d="M95 215H205L192 285C190 295 181 302 171 302H129C119 302 110 295 108 285L95 215Z" fill="#FFFFFF"/>
+              <path d="M203 228H218C229 228 237 236 237 247C237 258 229 266 218 266H197" stroke="#FFFFFF" stroke-width="10" stroke-linecap="round"/>
+              <path d="M150 185C143 175 128 175 128 188C128 200 150 212 150 212C150 212 172 200 172 188C172 175 157 175 150 185Z" fill="#F43F66"/>
+            </svg>
+            <div class="absolute inset-0 bg-black/35 opacity-0 group-hover:opacity-100 transition-opacity flex items-center justify-center gap-2">
+              <span class="px-3 py-1.5 rounded-full bg-white/95 text-stone-900 text-xs font-semibold shadow">📷 View / Change</span>
+            </div>
+          </div>
+          <p class="font-hand text-2xl text-center text-stone-700 dark:text-rose-100 mt-3" id="polaroid-cap-0">Where it all began ☕</p>
+        </div>
+
+        <!-- Polaroid 2 -->
+        <div class="polaroid-card group bg-white dark:bg-[#2a1620] p-3.5 pb-6 rounded-2xl shadow-xl shadow-stone-900/10 dark:shadow-black/40 border border-stone-100 dark:border-white/10 rotate-2 cursor-pointer" data-polaroid-id="1">
+          <div class="relative aspect-[4/5] w-full rounded-xl overflow-hidden bg-gradient-to-br from-blush-200 via-purple-100 to-indigo-100 flex items-center justify-center">
+            <img id="polaroid-img-1" src="photo2.jpg" alt="Sunset Walk" class="w-full h-full object-cover" />
+            <svg id="polaroid-svg-1" class="hidden w-full h-full" viewBox="0 0 300 375" fill="none" xmlns="http://www.w3.org/2000/svg">
+              <defs>
+                <linearGradient id="bg1" x1="0" y1="0" x2="0" y2="375" gradientUnits="userSpaceOnUse">
+                  <stop stop-color="#FDA4B6"/>
+                  <stop offset="0.55" stop-color="#FBCFE8"/>
+                  <stop offset="1" stop-color="#DDD6FE"/>
+                </linearGradient>
+              </defs>
+              <rect width="300" height="375" fill="url(#bg1)"/>
+              <circle cx="150" cy="215" r="56" fill="#FFF7ED" opacity="0.9"/>
+              <path d="M0 245Q85 220 150 245T300 240V375H0V245Z" fill="#FB718E" opacity="0.45"/>
+              <path d="M0 275Q110 255 200 280T300 270V375H0V275Z" fill="#9F1239" opacity="0.6"/>
+            </svg>
+          </div>
+          <p class="font-hand text-2xl text-center text-stone-700 dark:text-rose-100 mt-3" id="polaroid-cap-1">Golden hour walks 🌅</p>
+        </div>
+
+        <!-- Polaroid 3 -->
+        <div class="polaroid-card group bg-white dark:bg-[#2a1620] p-3.5 pb-6 rounded-2xl shadow-xl shadow-stone-900/10 dark:shadow-black/40 border border-stone-100 dark:border-white/10 -rotate-1 cursor-pointer" data-polaroid-id="2">
+          <div class="relative aspect-[4/5] w-full rounded-xl overflow-hidden bg-gradient-to-br from-slate-800 via-rose-950 to-blush-900 flex items-center justify-center">
+            <img id="polaroid-img-2" src="photo3.jpg" alt="Stargazing Night" class="w-full h-full object-cover" />
+            <svg id="polaroid-svg-2" class="hidden w-full h-full" viewBox="0 0 300 375" fill="none" xmlns="http://www.w3.org/2000/svg">
+              <rect width="300" height="375" fill="#23111B"/>
+              <circle cx="215" cy="95" r="34" fill="#FEF3C7"/>
+              <circle cx="201" cy="86" r="30" fill="#23111B"/>
+              <circle cx="70" cy="80" r="3" fill="#FDE68A"/>
+              <circle cx="115" cy="135" r="2.5" fill="#FFFFFF"/>
+              <circle cx="245" cy="175" r="3" fill="#FDE68A"/>
+              <circle cx="85" cy="210" r="2" fill="#FFFFFF"/>
+              <path d="M150 245C141 232 122 232 122 248C122 263 150 280 150 280C150 280 178 263 178 248C178 232 159 232 150 245Z" fill="#FB718E"/>
+            </svg>
+          </div>
+          <p class="font-hand text-2xl text-center text-stone-700 dark:text-rose-100 mt-3" id="polaroid-cap-2">Time Spend Together🌙</p>
+        </div>
+
+        <!-- Polaroid 4 -->
+        <div class="polaroid-card group bg-white dark:bg-[#2a1620] p-3.5 pb-6 rounded-2xl shadow-xl shadow-stone-900/10 dark:shadow-black/40 border border-stone-100 dark:border-white/10 rotate-3 cursor-pointer" data-polaroid-id="3">
+          <div class="relative aspect-[4/5] w-full rounded-xl overflow-hidden bg-gradient-to-br from-amber-100 via-blush-100 to-rose-200 flex items-center justify-center">
+            <img id="polaroid-img-3" src="photo4.jpg" alt="Favorite Adventure" class="w-full h-full object-cover" />
+            <svg id="polaroid-svg-3" class="hidden w-full h-full" viewBox="0 0 300 375" fill="none" xmlns="http://www.w3.org/2000/svg">
+              <rect width="300" height="375" fill="#FFE4E9"/>
+              <rect x="65" y="135" width="170" height="120" rx="22" fill="#FFFFFF"/>
+              <circle cx="150" cy="195" r="34" fill="#FDA4B6"/>
+              <circle cx="150" cy="195" r="20" fill="#F43F66"/>
+              <rect x="115" y="118" width="70" height="22" rx="8" fill="#FB718E"/>
+              <circle cx="206" cy="158" r="7" fill="#FBBF24"/>
+            </svg>
+          </div>
+          <p class="font-hand text-2xl text-center text-stone-700 dark:text-rose-100 mt-3" id="polaroid-cap-3">With My favorite person 📸</p>
+        </div>
+      </div>
+    </section>
+
+    <!-- ===================================================================
+         4. INTERACTIVE "REASONS I LOVE YOU" CARD DECK
+         =================================================================== -->
+    <section id="reasons" class="max-w-3xl mx-auto px-4 py-14">
+      <div class="text-center mb-8">
+        <span class="text-xs font-bold uppercase tracking-widest text-blush-600 dark:text-blush-300">Tap To Shuffle</span>
+        <h2 class="font-serif text-3xl sm:text-4xl font-bold text-stone-900 dark:text-white mt-1">Reasons I Adore You</h2>
+      </div>
+
+      <div class="relative max-w-lg mx-auto">
+        <!-- Decorative Stacked Background Cards -->
+        <div class="absolute inset-0 translate-y-3 rotate-2 rounded-3xl bg-blush-200/60 dark:bg-blush-500/10 border border-blush-300/40 pointer-events-none"></div>
+        <div class="absolute inset-0 translate-y-1.5 -rotate-2 rounded-3xl bg-blush-100/80 dark:bg-white/5 border border-blush-200/50 pointer-events-none"></div>
+
+        <!-- Active Reason Card -->
+        <div id="reason-card" class="relative glass-card rounded-3xl p-8 sm:p-10 text-center shadow-xl shadow-blush-500/10 min-h-[250px] flex flex-col items-center justify-between">
+          <div class="w-full flex items-center justify-between text-xs font-bold uppercase tracking-wider text-blush-500 dark:text-blush-300">
+            <span id="reason-counter">Reason #1 of 7</span>
+            <span>♥</span>
+          </div>
+
+          <p id="reason-text" class="font-serif italic text-xl sm:text-2xl text-stone-800 dark:text-white my-6 leading-relaxed">
+            "The way your eyes light up whenever you talk about something you love."
+          </p>
+
+          <button id="next-reason-btn" class="px-6 py-3 rounded-full bg-blush-600 hover:bg-blush-500 text-white text-sm font-semibold shadow-md shadow-blush-500/25 transition transform active:scale-95 cursor-pointer flex items-center gap-2">
+            <span>Draw Next Reason</span>
+            <span>✨</span>
+          </button>
+        </div>
+      </div>
+    </section>
+
+    <!-- ===================================================================
+         5. SECRET WAX-SEALED LOVE LETTER ENVELOPE
+         =================================================================== -->
+    <section id="letter" class="max-w-3xl mx-auto px-4 py-14">
+      <div class="text-center mb-8">
+        <span class="text-xs font-bold uppercase tracking-widest text-blush-600 dark:text-blush-300">Just For Your Eyes</span>
+        <h2 class="font-serif text-3xl sm:text-4xl font-bold text-stone-900 dark:text-white mt-1">My First Letter For You Was This</h2>
+      </div>
+
+      <!-- Interactive Envelope Wrapper -->
+      <div id="envelope-wrapper" class="max-w-xl mx-auto">
+        <!-- Closed Envelope State -->
+        <div id="envelope-closed" class="relative rounded-3xl bg-gradient-to-br from-blush-100/90 via-rose-50/90 to-amber-50/90 dark:from-[#2b141e]/90 dark:to-[#1f0e16]/90 backdrop-blur-md border-2 border-blush-200/80 dark:border-blush-500/25 p-10 sm:p-14 text-center shadow-xl cursor-pointer group transition-transform hover:-translate-y-1">
+          <!-- Envelope Flap Visual -->
+          <div class="w-16 h-16 mx-auto mb-5 rounded-full bg-blush-600 text-white flex items-center justify-center text-2xl shadow-lg shadow-blush-600/40 group-hover:scale-110 transition-transform">
+            💌
+          </div>
+          <h3 class="font-serif text-2xl font-bold text-stone-900 dark:text-white mb-2">Tap to Break the Wax Seal</h3>
+          <p class="text-sm text-stone-600 dark:text-rose-200/75">Written with all my heart</p>
+        </div>
+
+        <!-- Opened Letter Paper State -->
+        <div id="envelope-opened" class="hidden rounded-3xl bg-[#fffdf9]/95 dark:bg-[#24131b]/95 backdrop-blur-md border border-amber-200/70 dark:border-white/10 p-7 sm:p-11 shadow-2xl reason-pop">
+          <div class="flex items-center justify-between border-b border-blush-200/60 dark:border-white/10 pb-4 mb-6">
+            <span class="font-serif italic text-lg text-blush-600 dark:text-blush-300" id="letter-greeting-el">My dearest DEHA,</span>
+            <button id="close-letter-btn" class="text-xs font-semibold px-3 py-1 rounded-full bg-blush-100 dark:bg-white/10 text-blush-600 dark:text-rose-200 hover:opacity-80 cursor-pointer">
+              Fold Letter
+            </button>
+          </div>
+
+          <div id="letter-paragraphs-el" class="space-y-4 text-stone-700 dark:text-rose-100/90 leading-relaxed text-base sm:text-lg font-normal">
+            <!-- Populated dynamically from COUPLE_DATA -->
+          </div>
+
+          <p id="letter-signoff-el" class="font-hand text-3xl text-blush-600 dark:text-blush-400 mt-8 text-right">
+            Forever &amp; always yours, ABHINAV ❤️
+          </p>
+        </div>
+      </div>
+    </section>
+
+  </main>
+
+  <!-- =====================================================================
+       6. FLOATING AUDIO CONTROLLER (Controls Background Video Music)
+       ===================================================================== -->
+  <div id="music-widget" class="hidden fixed bottom-4 right-4 left-4 sm:left-auto sm:w-80 z-40 glass-card rounded-2xl p-3 shadow-2xl shadow-blush-500/15 border border-blush-200/80 dark:border-white/15 flex items-center justify-between gap-3">
+    <div class="flex items-center gap-3 min-w-0">
+      <div id="vinyl-disc" class="w-10 h-10 rounded-full bg-gradient-to-tr from-blush-600 to-rose-400 flex items-center justify-center text-white shadow-md shrink-0">
+        🎵
+      </div>
+      <div class="truncate">
+        <p id="music-title-text" class="text-xs font-bold text-stone-900 dark:text-white truncate">Background Music</p>
+        <p id="music-status-text" class="text-[11px] text-stone-500 dark:text-rose-200/70 truncate">Playing video audio...</p>
+      </div>
+    </div>
+
+    <button id="music-play-btn" class="px-4 py-2 rounded-xl bg-blush-600 hover:bg-blush-500 text-white text-xs font-bold shadow transition cursor-pointer shrink-0">
+      Mute
+    </button>
+  </div>
+
+  <!-- =====================================================================
+       LIGHTBOX MODAL FOR POLAROIDS (View Fullscreen or Upload Photo)
+       ===================================================================== -->
+  <div id="polaroid-modal" class="hidden fixed inset-0 z-50 bg-black/75 backdrop-blur-sm flex items-center justify-center p-4">
+    <div class="bg-white dark:bg-[#26131c] rounded-3xl max-w-md w-full p-5 shadow-2xl border border-white/15 text-center">
+      <div class="aspect-[4/5] w-full rounded-2xl overflow-hidden bg-blush-50 dark:bg-black/30 mb-4 flex items-center justify-center" id="modal-media-container">
+        <!-- Cloned SVG or Uploaded Image appears here -->
+      </div>
+      <input id="modal-caption-input" type="text" class="w-full text-center font-hand text-2xl bg-transparent border-b border-blush-200 dark:border-white/15 pb-1 mb-4 focus:outline-none text-stone-800 dark:text-white" />
+      <div class="flex items-center justify-center gap-3">
+        <button id="modal-upload-btn" class="px-4 py-2.5 rounded-full bg-blush-600 hover:bg-blush-500 text-white text-xs font-semibold cursor-pointer">
+          Upload Your Photo 📷
+        </button>
+        <button id="modal-close-btn" class="px-4 py-2.5 rounded-full bg-stone-200 dark:bg-white/10 text-stone-700 dark:text-rose-100 text-xs font-semibold cursor-pointer">
+          Done
+        </button>
+      </div>
+    </div>
+  </div>
+
+  <!-- =====================================================================
+       INTERACTIVE JAVASCRIPT ENGINE
+       ===================================================================== -->
+  <script>
+    document.addEventListener("DOMContentLoaded", () => {
+      // -------------------------------------------------------------------
+      // 0. REPEATABLE BACKGROUND VIDEO (POSITIONED BELOW HEADER + WITH AUDIO)
+      // -------------------------------------------------------------------
+      const mainHeader = document.getElementById("main-header");
+      const bgVideoWrapper = document.getElementById("bg-video-wrapper");
+      const bgVideo = document.getElementById("bg-video");
+      const bgVideoFileInput = document.getElementById("bg-video-file-input");
+      const musicPlayBtn = document.getElementById("music-play-btn");
+      const musicTitleText = document.getElementById("music-title-text");
+      const musicStatusText = document.getElementById("music-status-text");
+      const vinylDisc = document.getElementById("vinyl-disc");
+
+      let videoLoaded = false;
+
+      // Keep the background video pinned strictly below the sticky header/navbar
+      function syncVideoBelowHeader() {
+        const headerHeight = mainHeader.offsetHeight || 60;
+        bgVideoWrapper.style.top = `${headerHeight}px`;
+      }
+      window.addEventListener("resize", syncVideoBelowHeader);
+      if ("ResizeObserver" in window) {
+        new ResizeObserver(syncVideoBelowHeader).observe(mainHeader);
+      }
+
+      function updateVideoAudioUI() {
+        if (!videoLoaded) return;
+        if (!bgVideo.muted && !bgVideo.paused) {
+          musicTitleText.textContent = "Background Video Music";
+          musicStatusText.textContent = "Playing with sound...";
+          musicPlayBtn.textContent = "Mute";
+          vinylDisc.classList.add("animate-spin-slow");
+        } else {
+          musicTitleText.textContent = "Background Video Music";
+          musicStatusText.textContent = "Audio muted";
+          musicPlayBtn.textContent = "Unmute";
+          vinylDisc.classList.remove("animate-spin-slow");
+        }
+      }
+
+      function startVideoWithSound() {
+        bgVideo.muted = false;
+        bgVideo.volume = 1.0;
+        const playPromise = bgVideo.play();
+        if (playPromise !== undefined) {
+          playPromise
+            .then(() => {
+              updateVideoAudioUI();
+            })
+            .catch(() => {
+              // If browser blocks unmuted autoplay before interaction, start muted and unmute on click
+              bgVideo.muted = true;
+              bgVideo.play().catch(() => {});
+              updateVideoAudioUI();
+            });
+        }
+      }
+
+      function loadBackgroundVideo(src) {
+        if (!src) return;
+        bgVideo.src = src;
+        bgVideo.load();
+      }
+
+      bgVideo.addEventListener("loadeddata", () => {
+        videoLoaded = true;
+        bgVideo.classList.remove("opacity-0");
+        bgVideo.classList.add("opacity-100");
+        startVideoWithSound();
+      });
+
+      bgVideo.addEventListener("error", () => {
+        videoLoaded = false;
+        bgVideo.classList.add("opacity-0");
+        musicTitleText.textContent = "Our Melody (Music Box)";
+        musicStatusText.textContent = "Tap play for soft chimes";
+        musicPlayBtn.textContent = "Play";
+      });
+
+      loadBackgroundVideo(COUPLE_DATA.backgroundVideo);
+
+      document.getElementById("cfg-video-btn").addEventListener("click", () => {
+        bgVideoFileInput.click();
+      });
+
+      bgVideoFileInput.addEventListener("change", (e) => {
+        const file = e.target.files?.[0];
+        if (!file) return;
+        const objectUrl = URL.createObjectURL(file);
+        loadBackgroundVideo(objectUrl);
+      });
+
+      // -------------------------------------------------------------------
+      // A. INITIALIZE PERSONALIZED CONTENT FROM COUPLE_DATA
+      // -------------------------------------------------------------------
+      function syncTextContent() {
+        document.getElementById("gate-partner-name").textContent = COUPLE_DATA.partnerName;
+        document.getElementById("hero-your-name").textContent = COUPLE_DATA.yourName;
+        document.getElementById("hero-partner-name").textContent = COUPLE_DATA.partnerName;
+        document.getElementById("hero-subtitle").textContent = COUPLE_DATA.subtitle;
+
+        // Customizer inputs
+        document.getElementById("cfg-your-name").value = COUPLE_DATA.yourName;
+        document.getElementById("cfg-partner-name").value = COUPLE_DATA.partnerName;
+        document.getElementById("cfg-anniversary").value = COUPLE_DATA.anniversaryDate.slice(0, 16);
+
+        // Letter content
+        document.getElementById("letter-greeting-el").textContent = COUPLE_DATA.letterGreeting;
+        const bodyContainer = document.getElementById("letter-paragraphs-el");
+        bodyContainer.innerHTML = COUPLE_DATA.letterBody.map(p => `<p>${p}</p>`).join("");
+        document.getElementById("letter-signoff-el").textContent = COUPLE_DATA.letterSignOff;
+      }
+      syncTextContent();
+
+      // -------------------------------------------------------------------
+      // B. CONFETTI & FLOATING HEART PARTICLE ENGINE
+      // -------------------------------------------------------------------
+      const canvas = document.getElementById("celebration-canvas");
+      const ctx = canvas.getContext("2d");
+      let particles = [];
+
+      function resizeCanvas() {
+        canvas.width = window.innerWidth;
+        canvas.height = window.innerHeight;
+      }
+      window.addEventListener("resize", resizeCanvas);
+      resizeCanvas();
+
+      function launchCelebration(count = 75) {
+        const colors = ["#f43f66", "#fb718e", "#fda4b6", "#fbbf24", "#ffffff", "#e11d4c"];
+        for (let i = 0; i < count; i++) {
+          particles.push({
+            x: window.innerWidth / 2 + (Math.random() - 0.5) * 160,
+            y: window.innerHeight * 0.55,
+            vx: (Math.random() - 0.5) * 14,
+            vy: Math.random() * -13 - 4,
+            size: Math.random() * 8 + 6,
+            color: colors[Math.floor(Math.random() * colors.length)],
+            isHeart: Math.random() > 0.35,
+            rotation: Math.random() * 360,
+            vRot: (Math.random() - 0.5) * 8,
+            alpha: 1
+          });
+        }
+      }
+
+      function animateParticles() {
+        ctx.clearRect(0, 0, canvas.width, canvas.height);
+        particles.forEach((p, idx) => {
+          p.x += p.vx;
+          p.y += p.vy;
+          p.vy += 0.32; // gentle gravity
+          p.rotation += p.vRot;
+          p.alpha -= 0.012;
+
+          if (p.alpha <= 0) {
+            particles.splice(idx, 1);
+            return;
+          }
+
+          ctx.save();
+          ctx.globalAlpha = p.alpha;
+          ctx.translate(p.x, p.y);
+          ctx.rotate((p.rotation * Math.PI) / 180);
+          ctx.fillStyle = p.color;
+
+          if (p.isHeart) {
+            const s = p.size * 0.6;
+            ctx.beginPath();
+            ctx.moveTo(0, s / 4);
+            ctx.bezierCurveTo(0, 0, -s, 0, -s, s / 2);
+            ctx.bezierCurveTo(-s, s, 0, s * 1.35, 0, s * 1.6);
+            ctx.bezierCurveTo(0, s * 1.35, s, s, s, s / 2);
+            ctx.bezierCurveTo(s, 0, 0, 0, 0, s / 4);
+            ctx.fill();
+          } else {
+            ctx.fillRect(-p.size / 2, -p.size / 2, p.size, p.size * 0.6);
+          }
+          ctx.restore();
+        });
+        requestAnimationFrame(animateParticles);
+      }
+      animateParticles();
+
+      // Spawn subtle ambient background hearts
+      const ambientContainer = document.getElementById("ambient-hearts-container");
+      for (let i = 0; i < 12; i++) {
+        const span = document.createElement("span");
+        span.className = "bg-heart text-blush-400 select-none";
+        span.textContent = i % 2 === 0 ? "♥" : "♡";
+        span.style.left = `${Math.random() * 96}%`;
+        span.style.fontSize = `${Math.random() * 16 + 12}px`;
+        span.style.animationDuration = `${Math.random() * 10 + 12}s`;
+        span.style.animationDelay = `${Math.random() * 8}s`;
+        ambientContainer.appendChild(span);
+      }
+
+      // -------------------------------------------------------------------
+      // C. PLAYFUL ENTRY GATE LOGIC (Dodging 'No' & Growing 'Yes')
+      // -------------------------------------------------------------------
+      const entryGate = document.getElementById("entry-gate");
+      const mainApp = document.getElementById("main-app");
+      const musicWidget = document.getElementById("music-widget");
+      const yesBtn = document.getElementById("gate-yes-btn");
+      const noBtn = document.getElementById("gate-no-btn");
+      const gatePrompt = document.getElementById("gate-prompt-text");
+
+      const funnyNoPhrases = [
+        "Are you sure? 🥺",
+        "Wrong button, try the pink one! 💕",
+        "Nice try, too slow! 😜",
+        "My heart says click Yes ❤️",
+        "Error 404: 'No' not allowed! 🙈",
+        "Okay now you're just teasing 😂"
+      ];
+      let noAttempts = 0;
+
+      function dodgeNoButton(e) {
+        if (e) e.preventDefault();
+        noAttempts++;
+        const phrase = funnyNoPhrases[Math.min(noAttempts - 1, funnyNoPhrases.length - 1)];
+        noBtn.textContent = phrase;
+        gatePrompt.textContent = "Hehe, nice try! You know which button to press 😉";
+
+        // Grow the Yes button slightly with every attempt
+        const scale = Math.min(1 + noAttempts * 0.08, 1.45);
+        yesBtn.style.transform = `scale(${scale})`;
+
+        // Move No button within safe viewport bounds
+        const maxOffsetX = Math.min(130, window.innerWidth * 0.25);
+        const maxOffsetY = Math.min(90, window.innerHeight * 0.15);
+        const randX = (Math.random() - 0.5) * 2 * maxOffsetX;
+        const randY = (Math.random() - 0.5) * 2 * maxOffsetY;
+        noBtn.style.transform = `translate(${randX}px, ${randY}px)`;
+      }
+
+      noBtn.addEventListener("mouseenter", dodgeNoButton);
+      noBtn.addEventListener("click", dodgeNoButton);
+      noBtn.addEventListener("touchstart", dodgeNoButton, { passive: false });
+
+      yesBtn.addEventListener("click", () => {
+        launchCelebration(95);
+        // Unmute and play background video music immediately upon user click
+        if (videoLoaded) {
+          startVideoWithSound();
+        }
+        entryGate.style.opacity = "0";
+        setTimeout(() => {
+          entryGate.classList.add("hidden");
+          mainApp.classList.remove("hidden");
+          musicWidget.classList.remove("hidden");
+          syncVideoBelowHeader();
+          requestAnimationFrame(() => {
+            mainApp.style.opacity = "1";
+          });
+        }, 550);
+      });
+
+      // -------------------------------------------------------------------
+      // D. LIVE RELATIONSHIP TIMER
+      // -------------------------------------------------------------------
+      function updateRelationshipTimer() {
+        const start = new Date(COUPLE_DATA.anniversaryDate).getTime();
+        const now = Date.now();
+        let diff = Math.max(0, now - start);
+
+        const totalSeconds = Math.floor(diff / 1000);
+        const years = Math.floor(totalSeconds / (365.25 * 24 * 3600));
+        const remAfterYears = totalSeconds - Math.floor(years * 365.25 * 24 * 3600);
+        const days = Math.floor(remAfterYears / (24 * 3600));
+        const hours = Math.floor((remAfterYears % (24 * 3600)) / 3600);
+        const minutes = Math.floor((remAfterYears % 3600) / 60);
+        const seconds = remAfterYears % 60;
+
+        document.getElementById("timer-years").textContent = years;
+        document.getElementById("timer-days").textContent = days;
+        document.getElementById("timer-hours").textContent = String(hours).padStart(2, "0");
+        document.getElementById("timer-minutes").textContent = String(minutes).padStart(2, "0");
+        document.getElementById("timer-seconds").textContent = String(seconds).padStart(2, "0");
+      }
+      updateRelationshipTimer();
+      setInterval(updateRelationshipTimer, 1000);
+
+      // -------------------------------------------------------------------
+      // E. LIVE CUSTOMIZER DRAWER & DARK MODE
+      // -------------------------------------------------------------------
+      const customizerBtn = document.getElementById("customize-toggle-btn");
+      const customizerPanel = document.getElementById("customizer-panel");
+      const closeCustomizerBtn = document.getElementById("close-customizer-btn");
+
+      customizerBtn.addEventListener("click", () => {
+        customizerPanel.classList.toggle("hidden");
+        syncVideoBelowHeader();
+      });
+      closeCustomizerBtn.addEventListener("click", () => {
+        customizerPanel.classList.add("hidden");
+        syncVideoBelowHeader();
+      });
+
+      document.getElementById("cfg-your-name").addEventListener("input", (e) => {
+        COUPLE_DATA.yourName = e.target.value || "Me";
+        syncTextContent();
+      });
+      document.getElementById("cfg-partner-name").addEventListener("input", (e) => {
+        COUPLE_DATA.partnerName = e.target.value || "You";
+        syncTextContent();
+      });
+      document.getElementById("cfg-anniversary").addEventListener("change", (e) => {
+        if (e.target.value) {
+          COUPLE_DATA.anniversaryDate = e.target.value;
+          updateRelationshipTimer();
+        }
+      });
+
+      // Theme Switcher
+      const themeSwitchBtn = document.getElementById("theme-switch-btn");
+      const themeSwitchIcon = document.getElementById("theme-switch-icon");
+      themeSwitchBtn.addEventListener("click", () => {
+        document.documentElement.classList.toggle("dark");
+        const isDark = document.documentElement.classList.contains("dark");
+        themeSwitchIcon.textContent = isDark ? "☀️" : "🌙";
+      });
+
+      // -------------------------------------------------------------------
+      // F. POLAROID SCRAPBOOK LIGHTBOX & PHOTO UPLOAD
+      // -------------------------------------------------------------------
+      let activePolaroidIndex = 0;
+      const polaroidModal = document.getElementById("polaroid-modal");
+      const modalMediaContainer = document.getElementById("modal-media-container");
+      const modalCaptionInput = document.getElementById("modal-caption-input");
+      const polaroidFileInput = document.getElementById("polaroid-file-input");
+
+      document.querySelectorAll(".polaroid-card").forEach((card) => {
+        card.addEventListener("click", () => {
+          activePolaroidIndex = Number(card.dataset.polaroidId);
+          openPolaroidModal(activePolaroidIndex);
+        });
+      });
+
+      function openPolaroidModal(idx) {
+        const imgEl = document.getElementById(`polaroid-img-${idx}`);
+        const svgEl = document.getElementById(`polaroid-svg-${idx}`);
+        const capEl = document.getElementById(`polaroid-cap-${idx}`);
+
+        modalMediaContainer.innerHTML = "";
+        if (!imgEl.classList.contains("hidden") && imgEl.src) {
+          const cloneImg = document.createElement("img");
+          cloneImg.src = imgEl.src;
+          cloneImg.className = "w-full h-full object-cover";
+          modalMediaContainer.appendChild(cloneImg);
+        } else {
+          const cloneSvg = svgEl.cloneNode(true);
+          cloneSvg.removeAttribute("id");
+          modalMediaContainer.appendChild(cloneSvg);
+        }
+
+        modalCaptionInput.value = capEl.textContent;
+        polaroidModal.classList.remove("hidden");
+      }
+
+      modalCaptionInput.addEventListener("input", (e) => {
+        document.getElementById(`polaroid-cap-${activePolaroidIndex}`).textContent = e.target.value;
+      });
+
+      document.getElementById("modal-upload-btn").addEventListener("click", () => {
+        polaroidFileInput.click();
+      });
+
+      polaroidFileInput.addEventListener("change", (e) => {
+        const file = e.target.files?.[0];
+        if (!file) return;
+        const reader = new FileReader();
+        reader.onload = (ev) => {
+          const imgEl = document.getElementById(`polaroid-img-${activePolaroidIndex}`);
+          const svgEl = document.getElementById(`polaroid-svg-${activePolaroidIndex}`);
+          imgEl.src = ev.target.result;
+          imgEl.classList.remove("hidden");
+          svgEl.classList.add("hidden");
+          openPolaroidModal(activePolaroidIndex);
+          launchCelebration(30);
+        };
+        reader.readAsDataURL(file);
+        polaroidFileInput.value = "";
+      });
+
+      document.getElementById("modal-close-btn").addEventListener("click", () => {
+        polaroidModal.classList.add("hidden");
+      });
+      polaroidModal.addEventListener("click", (e) => {
+        if (e.target === polaroidModal) polaroidModal.classList.add("hidden");
+      });
+
+      // -------------------------------------------------------------------
+      // G. "REASONS I LOVE YOU" INTERACTIVE CARD DECK
+      // -------------------------------------------------------------------
+      let currentReasonIdx = 0;
+      const reasonCard = document.getElementById("reason-card");
+      const reasonCounter = document.getElementById("reason-counter");
+      const reasonText = document.getElementById("reason-text");
+
+      function renderReason(idx) {
+        const total = COUPLE_DATA.reasons.length;
+        reasonCounter.textContent = `Reason #${idx + 1} of ${total}`;
+        reasonText.textContent = `"${COUPLE_DATA.reasons[idx]}"`;
+        reasonCard.classList.remove("reason-pop");
+        void reasonCard.offsetWidth; // trigger reflow for restart
+        reasonCard.classList.add("reason-pop");
+      }
+      renderReason(0);
+
+      document.getElementById("next-reason-btn").addEventListener("click", () => {
+        currentReasonIdx = (currentReasonIdx + 1) % COUPLE_DATA.reasons.length;
+        renderReason(currentReasonIdx);
+      });
+
+      // -------------------------------------------------------------------
+      // H. SECRET WAX-SEALED LOVE LETTER ENVELOPE
+      // -------------------------------------------------------------------
+      const envelopeClosed = document.getElementById("envelope-closed");
+      const envelopeOpened = document.getElementById("envelope-opened");
+
+      envelopeClosed.addEventListener("click", () => {
+        envelopeClosed.classList.add("hidden");
+        envelopeOpened.classList.remove("hidden");
+        launchCelebration(40);
+      });
+
+      document.getElementById("close-letter-btn").addEventListener("click", () => {
+        envelopeOpened.classList.add("hidden");
+        envelopeClosed.classList.remove("hidden");
+      });
+
+      // -------------------------------------------------------------------
+      // J. AUDIO CONTROLLER (VIDEO SOUND + FALLBACK MUSIC-BOX CHIMES)
+      // -------------------------------------------------------------------
+      let audioCtx = null;
+      let isPlayingMelody = false;
+      let melodyInterval = null;
+      let noteStep = 0;
+
+      const melodyNotes = [
+        349.23, 440.00, 523.25, 659.25, // Fmaj7
+        329.63, 392.00, 493.88, 587.33, // Em7
+        293.66, 349.23, 440.00, 523.25, // Dm7
+        261.63, 329.63, 392.00, 493.88  // Cmaj7
+      ];
+
+      function playMusicBoxNote(freq) {
+        if (!audioCtx) return;
+        const now = audioCtx.currentTime;
+        const osc = audioCtx.createOscillator();
+        const gain = audioCtx.createGain();
+
+        osc.type = "sine";
+        osc.frequency.setValueAtTime(freq, now);
+
+        gain.gain.setValueAtTime(0.0001, now);
+        gain.gain.exponentialRampToValueAtTime(0.07, now + 0.04);
+        gain.gain.exponentialRampToValueAtTime(0.0001, now + 1.4);
+
+        osc.connect(gain);
+        gain.connect(audioCtx.destination);
+
+        osc.start(now);
+        osc.stop(now + 1.45);
+      }
+
+      musicPlayBtn.addEventListener("click", () => {
+        // Control background video audio if a video is loaded
+        if (videoLoaded) {
+          bgVideo.muted = !bgVideo.muted;
+          if (!bgVideo.muted && bgVideo.paused) {
+            bgVideo.play().catch(() => {});
+          }
+          updateVideoAudioUI();
+          return;
+        }
+
+        // Fallback to synthesized chimes if no video file is found
+        if (!isPlayingMelody) {
+          if (!audioCtx) {
+            audioCtx = new (window.AudioContext || window.webkitAudioContext)();
+          }
+          if (audioCtx.state === "suspended") {
+            audioCtx.resume();
+          }
+
+          isPlayingMelody = true;
+          musicPlayBtn.textContent = "Pause";
+          musicStatusText.textContent = "Playing soft chimes...";
+          vinylDisc.classList.add("animate-spin-slow");
+
+          playMusicBoxNote(melodyNotes[noteStep % melodyNotes.length]);
+          noteStep++;
+
+          melodyInterval = setInterval(() => {
+            playMusicBoxNote(melodyNotes[noteStep % melodyNotes.length]);
+            noteStep++;
+          }, 650);
+        } else {
+          isPlayingMelody = false;
+          clearInterval(melodyInterval);
+          musicPlayBtn.textContent = "Play";
+          musicStatusText.textContent = "Paused";
+          vinylDisc.classList.remove("animate-spin-slow");
+        }
+      });
+    });
+  </script>
+</body>
+</html>
